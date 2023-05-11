@@ -1,16 +1,60 @@
-const asyncHandler=require('express-async-handler')
-const Doctor = require("../models/DoctorModel")
-const Diagnosis = require("../models/DiagnosisModel")
+const asyncHandler = require("express-async-handler");
+const bcrypt = require("bcrypt");
+const { Doctor } = require("../models");
 
-const getDoctors=asyncHandler(async(req,res)=>{
-    const doctors=await Doctor.find()
-    return res.status(200).json({ doctors });
-})
+const getDoctors = asyncHandler(async (req, res) => {
+  const doctors = await Doctor.find().select("-password");
+  return res.status(200).json({ doctors });
+});
 
-const createDoctor = asyncHandler(async (req, res) => {
-    const doctor = await Doctor.create(req.body);
-    res.status(201).json({doctor});
+const getDoctor = asyncHandler(async (req, res) => {
+  const doctor = await Doctor.findOne({ _id: req.params.doctorId });
+  if (!doctor) {
+    res.statusCode = 400;
+    throw new Error(`No doctor exists with id ${req.params.doctorId}`);
+  }
+  res.status(200).json({ doctor: doctor });
+});
 
-})
+const registerDoctor = asyncHandler(async (req, res) => {
+  const checked_doctor = await Doctor.findOne({ email: req.body.email });
+  console.log(checked_doctor);
+  // check if doctor is already registered
+  if (checked_doctor) {
+    res.statusCode = 400;
+    throw new Error("Doctor with this email is already registered");
+  }
+  const { password } = req.body;
+  const hashedPassword = bcrypt.hashSync(password, 10);
+  const doctor = await Doctor.create({ ...req.body, password: hashedPassword });
+  res.status(201).json({ doctor });
+});
 
-module.exports={getDoctors, createDoctor}
+const updateDoctor = asyncHandler(async (req, res) => {
+  const doctor = await Doctor.findOne({ _id: req.params.doctorId });
+  if (!doctor) {
+    res.statusCode = 400;
+    throw new Error("No doctor found with such id");
+  }
+  await Doctor.updateOne({ _id: req.params.doctorId }, req.body);
+  const updatedDoctor = await Doctor.findOne({ _id: req.params.doctorId });
+  res.status(200).json({ doctor: updatedDoctor });
+});
+
+const deleteUser = asyncHandler(async (req, res) => {
+  const doctor = await Doctor.findOne({ _id: req.params.doctorId });
+  if (!doctor) {
+    res.statusCode = 400;
+    throw new Error("No doctor found with such id");
+  }
+  await Doctor.deleteOne({ _id: req.params.doctorId });
+  res.status(200).json(`Doctor with id ${req.params.doctorId} is deleted`);
+});
+
+module.exports = {
+  getDoctor,
+  getDoctors,
+  registerDoctor,
+  updateDoctor,
+  deleteUser,
+};
