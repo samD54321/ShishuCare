@@ -1,0 +1,25 @@
+const mongoose = require("mongoose");
+
+const PatientSchema = mongoose.Schema({
+  name: {
+    type: "string",
+    required: [true, "Please enter patient name"],
+  },
+  phone: {
+    type: "string",
+    required: [true, "Please enter patient phone number"],
+  },
+  address: {
+    type: "string",
+    required: [true, "Please enter patient address"],
+  },
+  DOB:{
+    type:Date,
+    required: [true, "Please enter date of birth of patient"]
+  }
+});
+
+
+const PatientModel= mongoose.model("Patient",PatientSchema)
+
+module.exports=PatientModel;
