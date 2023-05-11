@@ -17,6 +17,10 @@ const DoctorSchema = mongoose.Schema({
     hospital:{
         type: String,
         required: [true, "Please mandatorily provide a hospital name!"],
+    },
+    password:{
+        type: String,
+        required: [true, "Please mandatorily provide a password!"],
     }
 })
 

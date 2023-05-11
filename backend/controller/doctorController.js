@@ -1,9 +1,10 @@
 const asyncHandler=require('express-async-handler')
 const Doctor = require("../models/DoctorModel")
+const Diagnosis = require("../models/DiagnosisModel")
 
-const getDoctor=asyncHandler(async(req,res)=>{
-    throw new Error('Not Found')
-    // return res.status(200).json({ msg: "Hello I am doctor" });
+const getDoctors=asyncHandler(async(req,res)=>{
+    const doctors=await Doctor.find()
+    return res.status(200).json({ doctors });
 })
 
 const createDoctor = asyncHandler(async (req, res) => {
@@ -12,4 +13,4 @@ const createDoctor = asyncHandler(async (req, res) => {
 
 })
 
-module.exports={getDoctor, createDoctor}
+module.exports={getDoctors, createDoctor}
