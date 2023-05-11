@@ -1,7 +1,7 @@
 const mongoose=require('mongoose');
 
-const VistiSchema= mongoose.Schema({
-    date:{type:Date,default:new Date.now(),required:true},
+const VisitSchema= mongoose.Schema({
+    date:{type:Date,default: Date.now,required:true},
     height:{type:Number,required:true},
     weight:{type:Number,required:true},
     dehydration:{type:Boolean,required:true},
@@ -11,6 +11,6 @@ const VistiSchema= mongoose.Schema({
     CHW:{type:mongoose.Schema.Types.ObjectId,required:true,ref:"CHW"}
 })
 
-const VisitModel= mongoose.Model('Visit',VisitSchema)
+const VisitModel= mongoose.model('Visit',VisitSchema)
 
 module.exports =VisitModel
