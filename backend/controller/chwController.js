@@ -4,12 +4,12 @@ const bcrypt = require("bcrypt");
 
 const getCHWs = asyncHandler(async (req, res) => {
   const CHWs = await CHW.find().select("-password");
-  res.status(200).json({ data: CHWs });
+  return res.status(200).json({ data: CHWs });
 });
 
 const getCHW = asyncHandler(async (req, res) => {
   const chw = await CHW.findOne({ _id: req.params.chwId }).select("-password");
-  res.status(200).json({ data: chw });
+  return res.status(200).json({ data: chw });
 });
 
 const registerCHWs = asyncHandler(async (req, res) => {
@@ -20,7 +20,7 @@ const registerCHWs = asyncHandler(async (req, res) => {
   }
   const hashedPassword = bcrypt.hashSync(req.body.password, 10);
   const newCHW = await CHW.create({ ...req.body, password: hashedPassword });
-  res.status(200).json({ data: newCHW });
+  return res.status(200).json({ data: newCHW });
 });
 
 const updateCHW = asyncHandler(async (req, res) => {
@@ -29,7 +29,7 @@ const updateCHW = asyncHandler(async (req, res) => {
     throw new Error("CHW with id " + req.params.chwId + " does not exist");
   }
   await CHW.updateOne({ _id: req.params.chwId }, req.body);
-  res
+  return res
     .status(200)
     .json({
       data: {
@@ -44,7 +44,7 @@ const deleteCHW = asyncHandler(async (req, res) => {
     throw new Error("CHW with id " + req.params.chwId + " does not exist");
   }
   await CHW.deleteOne({ _id: req.params.chwId });
-  res.status(200).json({
+  return res.status(200).json({
     data: {
       msg: "CHW with id " + req.params.chwId + " deleted successfully",
     },

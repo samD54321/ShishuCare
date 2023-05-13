@@ -4,7 +4,7 @@ const { Doctor } = require("../models");
 
 const getDoctors = asyncHandler(async (req, res) => {
   const doctors = await Doctor.find().select("-password");
-  return res.status(200).json({ doctors });
+  return res.status(200).json({ data:doctors });
 });
 
 const getDoctor = asyncHandler(async (req, res) => {
@@ -13,7 +13,7 @@ const getDoctor = asyncHandler(async (req, res) => {
     res.statusCode = 400;
     throw new Error(`No doctor exists with id ${req.params.doctorId}`);
   }
-  res.status(200).json({ doctor: doctor });
+  return res.status(200).json({ data: doctor });
 });
 
 const registerDoctor = asyncHandler(async (req, res) => {
@@ -27,7 +27,7 @@ const registerDoctor = asyncHandler(async (req, res) => {
   const { password } = req.body;
   const hashedPassword = bcrypt.hashSync(password, 10);
   const doctor = await Doctor.create({ ...req.body, password: hashedPassword });
-  res.status(201).json({ doctor });
+  return res.status(201).json({ data:doctor });
 });
 
 const updateDoctor = asyncHandler(async (req, res) => {
@@ -38,7 +38,7 @@ const updateDoctor = asyncHandler(async (req, res) => {
   }
   await Doctor.updateOne({ _id: req.params.doctorId }, req.body);
   const updatedDoctor = await Doctor.findOne({ _id: req.params.doctorId });
-  res.status(200).json({ doctor: updatedDoctor });
+  return res.status(200).json({ data: updatedDoctor });
 });
 
 const deleteUser = asyncHandler(async (req, res) => {
@@ -48,7 +48,11 @@ const deleteUser = asyncHandler(async (req, res) => {
     throw new Error("No doctor found with such id");
   }
   await Doctor.deleteOne({ _id: req.params.doctorId });
-  res.status(200).json(`Doctor with id ${req.params.doctorId} is deleted`);
+  return res
+    .status(200)
+    .json({
+      data: { msg: `Doctor with id ${req.params.doctorId} is deleted` },
+    });
 });
 
 module.exports = {
