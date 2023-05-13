@@ -18,8 +18,10 @@ app.get("/", (req, res) => {
   res.status(200).send("Welcome To ShishuCare");
 });
 
-app.use("/doctor", require("./routes/doctorRoute"));
-app.use("/chw",require("./routes/chwRoutes"))
+app.use("/doctor", require("./routes/doctorRoutes"));
+app.use("/chw",require("./routes/chwRoutes"));
+app.use("/patient", require("./routes/patientRoutes"));
+
 
 app.use(errorHandlerMiddleware);
 
