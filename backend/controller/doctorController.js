@@ -8,7 +8,7 @@ const getDoctors = asyncHandler(async (req, res) => {
 });
 
 const getDoctor = asyncHandler(async (req, res) => {
-  const doctor = await Doctor.findOne({ _id: req.params.doctorId });
+  const doctor = await Doctor.findOne({ _id: req.params.doctorId }).select("-password");
   if (!doctor) {
     res.statusCode = 400;
     throw new Error(`No doctor exists with id ${req.params.doctorId}`);
