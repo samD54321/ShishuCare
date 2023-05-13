@@ -19,6 +19,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/doctor", require("./routes/doctorRoute"));
+app.use("/chw",require("./routes/chwRoutes"))
 
 app.use(errorHandlerMiddleware);
 
