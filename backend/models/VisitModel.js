@@ -1,7 +1,7 @@
 const mongoose=require('mongoose');
 
 const VisitSchema= mongoose.Schema({
-    date:{type:Date,default: Date.now,required:true},
+    DOV:{type:Date,default: Date.now,required:true},
     height:{type:Number,required:true},
     weight:{type:Number,required:true},
     dehydration:{type:Boolean,required:true},
