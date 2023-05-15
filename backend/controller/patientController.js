@@ -1,13 +1,14 @@
 const asyncHandler = require("express-async-handler");
-const { Patient, Doctor } = require("../models");
-const mongoose = require("mongoose");
+const { Patient, Visit } = require("../models");
 
 const getPatients = asyncHandler(async (req, res) => {
   const name = req.query.name;
   const patients =
     name === undefined
-      ? await Patient.find()
-      : await Patient.find({ name: { $regex: name, $options: "i" } });
+      ? await Patient.find().populate("visits")
+      : await Patient.find({ name: { $regex: name, $options: "i" } }).populate(
+          "visits"
+        );
   if (!patients.length) throw new Error("No such User exists");
   return res.status(200).json({ data: patients });
 });
@@ -47,9 +48,11 @@ const updatePatient = asyncHandler(async (req, res) => {
 
 const deletePatient = asyncHandler(async (req, res) => {
   const patientExists = await Patient.findOne({ _id: req.params.patientId });
-  if (!patientExists)
+  if (!patientExists) {
     throw new Error(`Patient with id ${req.params.patienId} doesn't exist`);
+  }
   await Patient.deleteOne({ _id: req.params.patientId });
+  await Visit.deleteMany({ patient: req.params.patientId });
   return res.status(200).json({
     data: { msg: `Patient with id ${req.params.patientId} is deleted` },
   });
