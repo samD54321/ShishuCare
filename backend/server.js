@@ -21,6 +21,7 @@ app.get("/", (req, res) => {
 app.use("/doctor", require("./routes/doctorRoutes"));
 app.use("/chw",require("./routes/chwRoutes"));
 app.use("/patient", require("./routes/patientRoutes"));
+app.use("/visit", require("./routes/visitRoutes"))
 
 
 app.use(errorHandlerMiddleware);

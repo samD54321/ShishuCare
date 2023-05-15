@@ -5,7 +5,7 @@ const DiagnoseSchema = mongoose.Schema({
     severity:{type: String,required: true,maxLength:20},
     prescriptions:{type: String,required: [true,'Please provide a prescription']},
     doctor:[{type:mongoose.Schema.Types.ObjectId,required:true,ref:'Doctor'}],
-    // visit:{type:mongoose.Schema.Types.ObjectId,required:true,ref:'Visit'},
+    visit:{type:mongoose.Schema.Types.ObjectId,required:true,ref:'Visit'},
 })  
 
 module.exports = mongoose.model('Diagnosis',DiagnoseSchema)

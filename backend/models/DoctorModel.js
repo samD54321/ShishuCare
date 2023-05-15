@@ -21,7 +21,7 @@ const DoctorSchema = mongoose.Schema({
     password:{
         type: String,
         required: [true, "Please mandatorily provide a password!"],
-    }
+    },
 })
 
 module.exports = mongoose.model("Doctor", DoctorSchema);
