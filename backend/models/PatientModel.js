@@ -13,12 +13,20 @@ const PatientSchema = mongoose.Schema({
     type: "string",
     required: [true, "Please enter patient address"],
   },
-  DOB:{
-    type:Date,
-    required: [true, "Please enter date of birth of patient"]
-  }
+  DOB: {
+    type: Date,
+    required: [true, "Please enter date of birth of patient"],
+  },
+  gender:{
+    type: "string",
+    required: [true, "Please enter patient gender"],
+  },
+  guardian:{
+    type: "string",
+    required: [true, "Please enter patient's Guardian Name"]
+  },
+  visit:[{type:mongoose.SchemaTypes.ObjectId,ref:"Visit",required:false}]
 });
-
 
 const PatientModel= mongoose.model("Patient",PatientSchema)
 
