@@ -17,17 +17,24 @@ const PatientSchema = mongoose.Schema({
     type: Date,
     required: [true, "Please enter date of birth of patient"],
   },
-  gender:{
+  gender: {
     type: "string",
     required: [true, "Please enter patient gender"],
   },
-  guardian:{
+  guardian: {
     type: "string",
-    required: [true, "Please enter patient's Guardian Name"]
+    required: [true, "Please enter patient's Guardian Name"],
   },
-  visit:[{type:mongoose.SchemaTypes.ObjectId,ref:"Visit",required:false}]
+  visits: [
+    {
+      type: mongoose.SchemaTypes.ObjectId,
+      ref: "Visit",
+      required: false,
+      cascade: true,
+    },
+  ],
 });
 
-const PatientModel= mongoose.model("Patient",PatientSchema)
+const PatientModel = mongoose.model("Patient", PatientSchema);
 
-module.exports=PatientModel;
+module.exports = PatientModel;
