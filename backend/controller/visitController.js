@@ -8,7 +8,7 @@ const allVisit=asyncHandler(async(req,res)=>{
 })
 
 const getVisit= asyncHandler(async(req,res)=>{
-    const patientVisit= await Visit.findById(req.params.visitId)
+    const patientVisit= await Visit.findById(req.params.visitId).populate('diagnosis')
     if (!patientVisit) throw new Error(`No such visit id : ${req.params.visitId} exists. `)
     res.status(200).json({data: patientVisit})
 })
