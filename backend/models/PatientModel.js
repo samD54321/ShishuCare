@@ -30,7 +30,6 @@ const PatientSchema = mongoose.Schema({
       type: mongoose.SchemaTypes.ObjectId,
       ref: "Visit",
       required: false,
-      cascade: true,
     },
   ],
 });

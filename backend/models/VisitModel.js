@@ -10,8 +10,8 @@ const VisitSchema = mongoose.Schema({
   breathRate: { type: String, required: true },
   drinkMilk: { type: Boolean, required: true },
   dehydration: { type: Boolean, required: true },
-  patient:{type:mongoose.SchemaTypes.ObjectId,ref:"Person"},
-  diagnose:{type:Boolean, default: false}
+  patient: { type: mongoose.SchemaTypes.ObjectId, ref: "Person" },
+  diagnosis: { type: mongoose.SchemaTypes.ObjectId, ref: "Diagnosis" },
   // CHW:{type:mongoose.Schema.Types.ObjectId,required:true,ref:"CHW"}
 });
 
