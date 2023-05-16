@@ -1,11 +1,20 @@
 const asyncHandler = require("express-async-handler");
-const { Patient, Visit } = require("../models");
+const { Patient, Visit,Diagnosis } = require("../models");
 
 const getPatients = asyncHandler(async (req, res) => {
   const name = req.query.name;
   const patients =
     name === undefined
-      ? await Patient.find().populate("visits")
+      ? await Patient.find().populate({
+          path: "visits",
+          model: "Visit",
+          select: "-patient",
+          populate: {
+            path: "diagnosis",
+            model: "Diagnosis",
+            select: ["-patient","-visit"],
+          },
+        })
       : await Patient.find({ name: { $regex: name, $options: "i" } }).populate(
           "visits"
         );
@@ -53,6 +62,7 @@ const deletePatient = asyncHandler(async (req, res) => {
   }
   await Patient.deleteOne({ _id: req.params.patientId });
   await Visit.deleteMany({ patient: req.params.patientId });
+  await Diagnosis.deleteMany({ patient: req.params.patientId });
   return res.status(200).json({
     data: { msg: `Patient with id ${req.params.patientId} is deleted` },
   });
