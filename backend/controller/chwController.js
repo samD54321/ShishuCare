@@ -1,6 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const { CHW } = require("../models");
 const bcrypt = require("bcrypt");
+const generateToken = require("../config/generateToken")
 
 const getCHWs = asyncHandler(async (req, res) => {
   const CHWs = await CHW.find().select("-password");
@@ -20,7 +21,7 @@ const registerCHWs = asyncHandler(async (req, res) => {
   }
   const hashedPassword = bcrypt.hashSync(req.body.password, 10);
   const newCHW = await CHW.create({ ...req.body, password: hashedPassword });
-  return res.status(200).json({ data: newCHW });
+  return res.status(200).json({ data: {name:newCHW.name, email:newCHW.email,phone:newCHW.phone,token:generateToken(newCHW._id,'CHW')}});
 });
 
 const updateCHW = asyncHandler(async (req, res) => {
