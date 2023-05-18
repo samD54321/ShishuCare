@@ -1,0 +1,11 @@
+const actions={
+  READ_ANY: "READ_ANY",
+  CREATE_ANY: "CREATE_ANY",
+  UPDATE_ANY: "UPDATE_ANY",
+  DELETE_ANY: "DELETE_ANY",
+  READ_OWN: "READ_OWN",
+  CREATE_OWN: "CREATE_OWN",
+  UPDATE_OWN: "UPDATE_OWN",
+  DELETE_OWN: "DELETE_OWN",
+};
+module.exports = actions
