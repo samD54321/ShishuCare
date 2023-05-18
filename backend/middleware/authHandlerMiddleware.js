@@ -10,11 +10,7 @@ const protectedRoute = asyncHandler(async (req, res, next) => {
     try {
       const data = jwt.verify(token, process.env.SECRET_KEY);
       req.ID = data.id;
-      if (data.role === "CHW") {
-        req.CHW = data.role;
-      } else {
-        req.DOCTOR = data.role;
-      }
+      req.role = data.role;
       next();
     } catch (error) {
       throw new Error("Not Authorized, Invalid Token");
@@ -23,5 +19,7 @@ const protectedRoute = asyncHandler(async (req, res, next) => {
     throw new Error("No authorization token. Please provide it.");
   }
 });
+
+
 
 module.exports = { protectedRoute };
