@@ -1,30 +1,37 @@
 const asyncHandler = require("express-async-handler");
 const bcrypt = require("bcrypt");
 const { Doctor } = require("../models");
-const generateToken = require("../config/generateToken")
+const generateToken = require("../config/generateToken");
+const { isPermissionGranted } = require("../config/accessControl");
+const actions = require("../constants/action_RBAC");
 
 const getDoctors = asyncHandler(async (req, res) => {
-  const doctors = await Doctor.find().select("-password");
-  if (req.DOCTOR){
-  return res.status(200).json({ data: doctors });
-  }
-  else{
-    throw new Error("Not Authorized")
+  const permission = isPermissionGranted(req.role, "doctor", actions.READ_ANY);
+  if (permission) {
+    const doctors = await Doctor.find().select("-password");
+    return res.status(200).json({ data: doctors });
+  } else {
+    res.statusCode = 403;
+    throw new Error("You are forbidden to access this");
   }
 });
 
 const getDoctor = asyncHandler(async (req, res) => {
-  const doctor = await Doctor.findOne({ _id: req.params.doctorId }).select("-password");
-  if (!doctor) {
-    res.statusCode = 400;
-    throw new Error(`No doctor exists with id ${req.params.doctorId}`);
-  }
-   if (req.DOCTOR) {
-       return res.status(200).json({ data: doctor });
+  const permission = isPermissionGranted(req.role, "doctor", actions.READ_ANY);
+  if (permission) {
+    const doctor = await Doctor.findOne({ _id: req.params.doctorId }).select(
+      "-password"
+    );
+    if (!doctor) {
+      res.statusCode = 400;
+      throw new Error(`No doctor exists with id ${req.params.doctorId}`);
+    }
 
-   } else {
-     throw new Error("Not Authorized");
-   }
+    return res.status(200).json({ data: doctor });
+  } else {
+    res.statusCode = 403;
+    throw new Error("You are forbidden to access this");
+  }
 });
 
 const registerDoctor = asyncHandler(async (req, res) => {
@@ -39,39 +46,68 @@ const registerDoctor = asyncHandler(async (req, res) => {
   const { password } = req.body;
   const hashedPassword = bcrypt.hashSync(password, 10);
   const doctor = await Doctor.create({ ...req.body, password: hashedPassword });
-  return res.status(201).json({ data:{name: doctor.name,phone:doctor.phone,email:doctor.email,hospital:doctor.hospital,token:generateToken(doctor._id,'doctor')} });
+  return res.status(201).json({ data: doctor });
+});
+
+const loginDoctor = asyncHandler(async (req, res) => {
+  const { email, password } = req.body;
+  const doctor = await Doctor.findOne({ email });
+  const checkPassword = bcrypt.compareSync(password, doctor.password);
+  if (!checkPassword) {
+    res.statusCode = 401;
+    throw new Error("Invalid credentials");
+  } else {
+    return res.status(200).json({
+      data: {
+        name: doctor.name,
+        email: doctor.email,
+        phone: doctor.phone,
+        hospital: doctor.hospital,
+        token: generateToken(doctor._id, "DOCTOR"),
+      },
+    });
+  }
 });
 
 const updateDoctor = asyncHandler(async (req, res) => {
-  const doctor = await Doctor.findOne({ _id: req.params.doctorId });
-  if (!doctor) {
-    res.statusCode = 400;
-    throw new Error("No doctor found with such id");
+  const permission =
+    req.ID === req.params.doctorId
+      ? isPermissionGranted(req.role, "doctor", actions.UPDATE_OWN)
+      : false;
+  if (!permission) {
+    res.statusCode = 403;
+    throw new Error("You are forbidden to access this");
+  } else {
+    const doctor = await Doctor.findOne({ _id: req.params.doctorId });
+    if (!doctor) {
+      res.statusCode = 400;
+      throw new Error("No doctor found with such id");
+    }
+    await Doctor.updateOne({ _id: req.params.doctorId }, req.body);
+    const updatedDoctor = await Doctor.findOne({ _id: req.params.doctorId });
+    return res.status(200).json({ data: updatedDoctor });
   }
-  await Doctor.updateOne({ _id: req.params.doctorId }, req.body);
-  const updatedDoctor = await Doctor.findOne({ _id: req.params.doctorId });
-   if (req.DOCTOR && req.ID===req.params.doctorId) {
-      return res.status(200).json({ data: updatedDoctor });
-   } else {
-     throw new Error("Not Authorized");
-   }
 });
 
 const deleteUser = asyncHandler(async (req, res) => {
-  const doctor = await Doctor.findOne({ _id: req.params.doctorId });
-  if (!doctor) {
-    res.statusCode = 400;
-    throw new Error("No doctor found with such id");
+  const permission =
+    req.ID === req.params.doctorId
+      ? isPermissionGranted(req.role, "doctor", actions.DELETE_OWN)
+      : false;
+  if (!permission) {
+    res.statusCode = 403;
+    throw new Error("You are forbidden to access this");
+  } else {
+    const doctor = await Doctor.findOne({ _id: req.params.doctorId });
+    if (!doctor) {
+      res.statusCode = 400;
+      throw new Error("No doctor found with such id");
+    }
+    await Doctor.deleteOne({ _id: req.params.doctorId });
+    return res.status(200).json({
+      data: { msg: `Doctor with id ${req.params.doctorId} is deleted` },
+    });
   }
-  await Doctor.deleteOne({ _id: req.params.doctorId });
-      if (req.DOCTOR && req.ID === req.params.doctorId) {
-        return res.status(200).json({
-          data: { msg: `Doctor with id ${req.params.doctorId} is deleted` },
-        });
-      } else {
-        throw new Error("Not Authorized");
-      }
- 
 });
 
 module.exports = {
@@ -80,4 +116,5 @@ module.exports = {
   registerDoctor,
   updateDoctor,
   deleteUser,
+  loginDoctor,
 };

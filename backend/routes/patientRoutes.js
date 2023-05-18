@@ -1,5 +1,5 @@
 const router = require("express").Router();
-
+const { protectedRoute } = require("../middleware/authHandlerMiddleware");
 const {
   getPatients,
   getPatient,
@@ -8,7 +8,14 @@ const {
   deletePatient,
 } = require("../controller/patientController");
 
-router.route("/").get(getPatients).post(registerPatient);
-router.route("/:patientId").get(getPatient).put(updatePatient).delete(deletePatient);
+router
+  .route("/")
+  .get(protectedRoute, getPatients)
+  .post(protectedRoute, registerPatient);
+router
+  .route("/:patientId")
+  .get(protectedRoute, getPatient)
+  .put(protectedRoute, updatePatient)
+  .delete(protectedRoute, deletePatient);
 
 module.exports = router;

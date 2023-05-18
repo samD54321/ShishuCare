@@ -12,7 +12,7 @@ const VisitSchema = mongoose.Schema({
   dehydration: { type: Boolean, required: true },
   patient: { type: mongoose.SchemaTypes.ObjectId, ref: "Person" },
   diagnosis: { type: mongoose.SchemaTypes.ObjectId, ref: "Diagnosis" },
-  // CHW:{type:mongoose.Schema.Types.ObjectId,required:true,ref:"CHW"}
+  CHW:{type:mongoose.Schema.Types.ObjectId,required:true,ref:"CHW"}
 });
 
 const VisitModel= mongoose.model('Visit',VisitSchema)
