@@ -1,0 +1,89 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 8,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true,
+      "modules": true,
+      "experimentalObjectRestSpread": true
+    }
+  },
+  "plugins": [
+    "react",
+    "jsx-a11y",
+    "import",
+    "react-hooks",
+    "@typescript-eslint",
+    "prettier"
+  ],
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended",
+    "prettier"
+  ],
+  "env": {
+    "browser": true,
+    "node": true,
+    "mocha": true,
+    "jest": true
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
+  "rules": {
+    "react/jsx-filename-extension": [
+      1,
+      {
+        "extensions": [".ts", ".tsx"]
+      }
+    ],
+    "@typescript-eslint/no-empty-interface": "off",
+    //Handled by prettier
+    "comma-dangle": 0,
+    "semi": 0,
+    "object-curly-newline": 0,
+    "jsx-a11y/label-has-associated-control": "off",
+    "jsx-a11y/label-has-for": 0,
+    "no-prototype-builtins": 0,
+    "react/jsx-one-expression-per-line": 0,
+    "react/prop-types": 0,
+    "react/forbid-prop-types": 0,
+    "react/destructuring-assignment": 0,
+    "react/no-array-index-key": 0,
+    "no-plusplus": 0,
+    "no-underscore-dangle": 0,
+    "use-isnan": "off",
+    "no-restricted-globals": ["off", "isNaN"],
+    "implicit-arrow-linebreak": [0, "below"],
+    "react/jsx-props-no-spreading": [0],
+    "quotes": [2, "single", "avoid-escape"],
+    "jsx-quotes": ["error", "prefer-double"],
+    "object-curly-spacing": ["error", "always"],
+    "keyword-spacing": "off",
+    "@typescript-eslint/keyword-spacing": [
+      "error",
+      {
+        "before": true,
+        "after": true
+      }
+    ],
+    "react/jsx-uses-react": "off",
+    "react/react-in-jsx-scope": "off",
+    "prettier/prettier": [
+      "error",
+      {
+        "endOfLine": "auto"
+      }
+    ]
+  },
+  "globals": {
+    "__base": true,
+    "global": true,
+    "isNaN": true
+  }
+}
