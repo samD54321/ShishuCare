@@ -7,7 +7,7 @@
       "@config/*": ["src/config/*"],
       "@store/*": ["src/store/*"],
       "@features/*": ["src/features/*"],
-      "@utils/*": ["src/utils/*"],
+      "@elements/*": ["src/elements/*"],
       "@constants/*": ["src/constants/*"]
     }
   }

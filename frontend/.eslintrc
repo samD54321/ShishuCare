@@ -9,20 +9,12 @@
       "experimentalObjectRestSpread": true
     }
   },
-  "plugins": [
-    "react",
-    "jsx-a11y",
-    "import",
-    "react-hooks",
-    "@typescript-eslint",
-    "prettier"
-  ],
+  "plugins": ["react", "jsx-a11y", "import", "react-hooks", "@typescript-eslint", "prettier"],
   "extends": [
     "eslint:recommended",
     "plugin:react/recommended",
     "plugin:@typescript-eslint/recommended",
-    "plugin:prettier/recommended",
-    "prettier"
+    "plugin:prettier/recommended"
   ],
   "env": {
     "browser": true,

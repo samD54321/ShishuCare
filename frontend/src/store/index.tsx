@@ -1,18 +1,19 @@
 import { configureStore } from '@reduxjs/toolkit';
 // Or from '@reduxjs/toolkit/query/react'
 import { setupListeners } from '@reduxjs/toolkit/query';
-import { useDispatch as useDispatchBase } from 'react-redux';
-import testReducer from "../features/testSlice"
+import testReducer from '../features/testSlice';
+import { chwApi } from '@/features/chw/chwApi';
 
 export const store = configureStore({
   reducer: {
-    test:testReducer
+    test: testReducer,
     // Add the generated reducer as a specific top-level slice
+    [chwApi.reducerPath]: chwApi.reducer,
   },
   // Adding the api middleware enables caching, invalidation, polling,
   // and other useful features of `rtk-query`.
 
-//   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(pokemonApi.middleware),
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(chwApi.middleware),
 });
 
 // optional, but required for refetchOnFocus/refetchOnReconnect behaviors
@@ -20,9 +21,6 @@ export const store = configureStore({
 setupListeners(store.dispatch);
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
-export type RootState = ReturnType<typeof store.getState>
+export type RootState = ReturnType<typeof store.getState>;
 // Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
-export type AppDispatch = typeof store.dispatch
-
-// Since we use typescript, lets utilize `useDispatch`
-export const useDispatch = () => useDispatchBase<AppDispatch>();
+export type AppDispatch = typeof store.dispatch;
