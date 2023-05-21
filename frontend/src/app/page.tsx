@@ -1,21 +1,52 @@
-"use client";
+'use client';
 
 import React from 'react';
-import { useSelector } from 'react-redux';
-import { useDispatch } from '@/store';
-import { RootState } from '@/store';
-import { setTest } from '@/features/testSlice';
+import { Box,Container } from '@mui/material';
+import { LoginComponent } from '@components/Login';
+import { Header } from '@components/Header';
 
-const page = () => {
-  const dispatch = useDispatch();
-  const { test } = useSelector((state: RootState) => state.test);
+const Login = () => {
   return (
-    <div>
-      Main Page text is : <h1>{test}</h1>
-      <button onClick={() => dispatch(setTest('Shishu_Care'))}>click</button>
-    </div>
+    <Box
+      sx={{
+        bgcolor: '#234AAF',
+        height: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'start',
+        '& ': {
+          paddingInline: '1rem',
+        },
+      }}
+    >
+      <Container
+        sx={{
+          display: 'flex',
+          justifyContent: 'start',
+          flexDirection:"row",
+          margin: '0rem',
+          h4: {
+            margin:"1rem",
+            fontSize: ['1.5rem', '2.5rem'],
+            paddingInlineStart: '0.5rem',
+            color:"white"
+          },
+        }}
+      >
+        <Header />
+      </Container>
+      <Container
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          height: '100%',
+          width: '100%',
+        }}
+      >
+        <LoginComponent />
+      </Container>
+    </Box>
   );
 };
 
-
-export default page;
+export default Login;
