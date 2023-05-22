@@ -52,6 +52,10 @@ const registerDoctor = asyncHandler(async (req, res) => {
 const loginDoctor = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
   const doctor = await Doctor.findOne({ email });
+   if (!doctor) {
+    res.statusCode=400
+     throw new Error("Not registered. please register first");
+   }
   const checkPassword = bcrypt.compareSync(password, doctor.password);
   if (!checkPassword) {
     res.statusCode = 401;

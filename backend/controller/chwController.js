@@ -46,9 +46,10 @@ const loginCHW = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
   const chw = await CHW.findOne({ email });
   if (!chw) {
+    res.statusCode = 400;
     throw new Error("Not registered. please register first");
   }
-  const checkPassword = bcrypt.compareSync(password, chw.password);
+  const checkPassword =await bcrypt.compare(password, chw.password);
   if (!checkPassword) {
     res.statusCode = 401;
     throw new Error("Invalid credentials");
