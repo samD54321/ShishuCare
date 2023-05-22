@@ -1,7 +1,8 @@
 import React from 'react';
-import { Box, Button, Paper, TextField, Container, Avatar, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 import Logo from '@assets/png/logo.png';
 import Image from 'next/image';
+
 
 const Header = () => {
   return (
@@ -10,17 +11,17 @@ const Header = () => {
         sx={{
           bgcolor: 'white',
           borderRadius: '100%',
-          padding: '2rem',
-          display:"flex",
-          alignItems: "center",
-          justifyContent: "center",
-          height:"20%",
-          width:"2.5%"
+          padding: '1rem',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          height: '20%',
+          width: ['12%','10%','7%', '4.5%'],
         }}
       >
         <Image height={70} width={70} src={Logo} alt="header"></Image>
       </Box>
-      <h4 >शिशुCare </h4>
+      <h4>शिशुCare </h4>
     </>
   );
 };
