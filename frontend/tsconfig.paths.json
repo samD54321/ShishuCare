@@ -8,7 +8,8 @@
       "@store/*": ["src/store/*"],
       "@features/*": ["src/features/*"],
       "@elements/*": ["src/elements/*"],
-      "@constants/*": ["src/constants/*"]
+      "@constants/*": ["src/constants/*"],
+      "@auth/*": ["src/auth/*"],
     }
   }
 }
