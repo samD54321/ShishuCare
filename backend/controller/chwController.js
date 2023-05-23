@@ -43,6 +43,7 @@ const registerCHW = asyncHandler(async (req, res) => {
 });
 
 const loginCHW = asyncHandler(async (req, res) => {
+  console.log(req.ID,req.role)
   const { email, password } = req.body;
   const chw = await CHW.findOne({ email });
   if (!chw) {
@@ -60,6 +61,7 @@ const loginCHW = asyncHandler(async (req, res) => {
         email: chw.email,
         phone: chw.phone,
         token: generateToken(chw._id, "CHW"),
+        role:"CHW"
       },
     });
   }
