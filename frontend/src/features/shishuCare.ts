@@ -32,8 +32,12 @@ const shishuCareSlice = createSlice({
       state.isCHWLogin = true;
       state.isDoctorLogin = false;
     },
+    reset: (state) => {
+      state.isCHWLogin = false;
+      state.isDoctorLogin = false;
+    },
   },
 });
 
-export const { logout, loginDoctor, loginCHW } = shishuCareSlice.actions;
+export const { logout, loginDoctor, loginCHW, reset } = shishuCareSlice.actions;
 export default shishuCareSlice.reducer;
