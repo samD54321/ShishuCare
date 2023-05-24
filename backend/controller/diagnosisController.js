@@ -38,6 +38,9 @@ const createDiagnosis = asyncHandler(async (req, res) => {
       patient: visit.patient,
       doctor: req.ID,
     });
+    if (diagnosis){
+      await Visit.updateOne({_id: req.params.visitId},{isDiagnosed: true})
+    }
     await Visit.updateOne(
       { _id: req.params.visitId },
       { diagnosis: diagnosis._id }
