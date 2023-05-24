@@ -48,4 +48,9 @@ const registerVisit = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { getVisit, registerVisit, allVisit };
+const updateVisit=asyncHandler(async(req, res)=>{
+    await Visit.updateOne({_id:req.params.visitId},req.body)
+    return res.status(201).json({msg:"Updated Successfully"});
+})
+
+module.exports = { getVisit, registerVisit, allVisit, updateVisit };
