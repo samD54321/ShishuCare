@@ -11,7 +11,7 @@ const Dashboard = () => {
   if (!authenticated) {
     router.push('/login');
   }
-  return <>{isDoctorLogin ? <DoctorDashboard /> : <CHWDashBoard />}</>;
+  return <>{isDoctorLogin ? <DoctorDashboard /> : isCHWLogin ? <CHWDashBoard /> : <></>}</>;
 };
 
 export default Dashboard;
