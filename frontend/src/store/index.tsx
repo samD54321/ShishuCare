@@ -4,6 +4,7 @@ import { setupListeners } from '@reduxjs/toolkit/query';
 import shishuCareReducer from '../features/shishuCare';
 import { chwApi } from '@features/chw/chwApi';
 import {doctorApi} from '@features/doctor/doctorApi'
+import {patientApi} from '@features/patient/patientApi'
 
 export const store = configureStore({
   reducer: {
@@ -11,12 +12,13 @@ export const store = configureStore({
     // Add the generated reducer as a specific top-level slice
     [chwApi.reducerPath]: chwApi.reducer,
     [doctorApi.reducerPath]: doctorApi.reducer,
+    [patientApi.reducerPath]: patientApi.reducer
   },
   // Adding the api middleware enables caching, invalidation, polling,
   // and other useful features of `rtk-query`.
 
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(chwApi.middleware).concat(doctorApi.middleware),
+    getDefaultMiddleware().concat(chwApi.middleware).concat(doctorApi.middleware).concat(patientApi.middleware),
 });
 
 // optional, but required for refetchOnFocus/refetchOnReconnect behaviors
