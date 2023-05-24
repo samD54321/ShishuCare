@@ -68,6 +68,7 @@ const loginDoctor = asyncHandler(async (req, res) => {
         phone: doctor.phone,
         hospital: doctor.hospital,
         token: generateToken(doctor._id, "DOCTOR"),
+        role: "Doctor",
       },
     });
   }

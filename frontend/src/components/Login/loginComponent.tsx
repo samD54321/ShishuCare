@@ -8,16 +8,21 @@ import { useLoginCHWMutation } from '@features/chw/chwApi';
 import { useLoginDoctorMutation } from '@features/doctor/doctorApi';
 import ChevronRight from '@assets/svg/chevronRight.svg';
 import ChevronLeft from '@assets/svg/chevronLeft.svg';
-import { LocalStorageToken } from '../../auth/auth';
+import { LocalStorageItem } from '../../auth/auth';
+import { useDispatch } from 'react-redux';
+import { loginCHW, loginDoctor } from '@features/shishuCare';
+import { useRouter } from 'next/navigation';
 
 const LoginComponent = () => {
+  const router = useRouter();
+  const dispatch = useDispatch();
   const [chevronClick, setChevronClick] = useState(false);
   const [user, setUser] = useState({
     email: '',
     password: '',
   });
-  const [loginCHW] = useLoginCHWMutation();
-  const [loginDoctor] = useLoginDoctorMutation();
+  const [login_CHW] = useLoginCHWMutation();
+  const [login_Doctor] = useLoginDoctorMutation();
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     e.preventDefault();
     const name = e.target.name;
@@ -25,21 +30,31 @@ const LoginComponent = () => {
     setUser({ ...user, [name]: value });
   };
   const handleClick = (e: React.MouseEvent) => {
-    console.log(user)
     e.preventDefault();
     if (!user.email || !user.password) {
       alert('Please enter all information');
     } else {
       if (chevronClick) {
-        loginCHW(user).then((datas: any) => {
-          console.log(datas)
-          if (datas){
-          LocalStorageToken.setToken(datas.data.data.token, 'chwToken');
+        login_CHW(user).then((datas: any) => {
+          const user = datas.data || '';
+          if (user) {
+            LocalStorageItem.setItem(user.data);
+            dispatch(loginCHW());
+            router.push('/dashboard');
+          } else {
+            alert(datas.error.data.error);
           }
         });
       } else {
-        loginDoctor(user).then((datas: any) => {
-          LocalStorageToken.setToken(datas.data.data.token, 'doctorToken');
+        login_Doctor(user).then((datas: any) => {
+          const user = datas.data || '';
+          if (user) {
+            LocalStorageItem.setItem(user.data);
+            dispatch(loginDoctor());
+            router.push('/dashboard');
+          } else {
+            alert(datas.error.data.error);
+          }
         });
       }
       setUser({
@@ -54,13 +69,13 @@ const LoginComponent = () => {
         elevation={24}
         sx={{
           bgcolor: 'white',
-          height: [`75%`, `75%`, `75%`, `65%`, `65%`],
-          width: [`100%`, `75%`, `65%`, `55%`, `55%`],
+          // height: [`75%`, `75%`, `75%`, `65%`, `55%`],
+          width: [`100%`, `75%`, `65%`, `55%`, `50%`],
           borderRadius: '2%',
           padding: '2rem',
           display: 'flex',
           flexDirection: 'column',
-          alignItems: 'center',
+          alignItems: 'start',
           justifyItems: 'space-around',
           textAlign: 'left',
           gap: '2rem',
@@ -89,7 +104,7 @@ const LoginComponent = () => {
           <Container
             sx={{
               display: 'flex',
-              justifyContent: 'end',
+              justifyContent: 'center',
             }}
           >
             <h3>DOCTOR LOGIN</h3>
@@ -105,7 +120,18 @@ const LoginComponent = () => {
           </Container>
         )}
 
-        <Container sx={{ width: '80%', display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+        <Container
+          maxWidth="xl"
+          sx={{
+            width: '70%',
+            display: 'flex',
+            flexDirection: 'column',
+            margin: 0,
+            marginInlineStart: 3,
+            alignItems: 'center',
+            gap: '2rem',
+          }}
+        >
           <TextField
             sx={{
               width: '90%',
@@ -146,9 +172,18 @@ const LoginComponent = () => {
             onChange={(e) => handleChange(e)}
           />
         </Container>
-        <Button onClick={(e) => handleClick(e)} sx={{ width: '30%' }} variant="contained">
-          LogIn{' '}
-        </Button>
+        <Container
+          maxWidth="xl"
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'center',
+          }}
+        >
+          <Button onClick={(e) => handleClick(e)} sx={{ width: '20%' }} variant="contained">
+            LogIn{' '}
+          </Button>
+        </Container>
       </Paper>
     </>
   );

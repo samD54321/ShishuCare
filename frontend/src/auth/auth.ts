@@ -1,15 +1,15 @@
-export class LocalStorageToken {
+import { ILocalStorageItem } from "@interfaces/index";
 
-  static getToken = (name:string) : string | null => {
-    return localStorage.getItem(name);
+export class LocalStorageItem {
+  static getItem = (): ILocalStorageItem => {
+    return JSON.parse(localStorage.getItem('user') || '{}');
   };
 
-  static setToken = (token: string,name:string) => {
-    localStorage.setItem(name, token);
+  static setItem = (user: ILocalStorageItem) => {
+    localStorage.setItem('user', JSON.stringify(user));
   };
 
-  static clearToken = (name:string) => {
-    localStorage.removeItem(name);
-  }
+  static clearItem = () => {
+    localStorage.removeItem('user');
+  };
 }
-
