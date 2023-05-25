@@ -34,12 +34,21 @@ export const patientApi = createApi({
         return handleResponse(response.data);
       },
     }),
+    getpatientById: builder.query({
+      query: (id: string) => `${id}/`,
+      transformResponse: (response: any) => {
+        const data = response.data;
+        const visits = data.visits;
+        let newVisit = visits.pop();
+        return { data, newVisit, visits };
+      },
+    }),
   }),
 });
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useGetPatientsQuery, useLazyGetPatientsQuery } = patientApi;
+export const { useGetPatientsQuery, useGetpatientByIdQuery } = patientApi;
 
 const handleResponse = (datas: IDataResponse[]) => {
   let RecurringPatients: Array<IDataResponse> = [];
@@ -48,15 +57,15 @@ const handleResponse = (datas: IDataResponse[]) => {
     if (data.visits.length > 1) {
       for (let visit of data.visits) {
         if (!visit.isDiagnosed) {
-          RecurringPatients.push({ ...data});
+          RecurringPatients.push({ ...data });
         }
       }
     } else {
       if (!data.visits[0].isDiagnosed) {
-        NewPatients.push({ ...data});
+        NewPatients.push({ ...data });
       }
     }
   }
 
-  return {RecurringPatients,NewPatients};
+  return { RecurringPatients, NewPatients };
 };

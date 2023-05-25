@@ -36,7 +36,23 @@ const getPatient = asyncHandler(async (req, res) => {
     res.statusCode = 403;
     throw new Error("You are forbidden to access this");
   } else {
-    const patient = await Patient.findOne({ _id: req.params.patientId });
+    const patient = await Patient.findOne({
+      _id: req.params.patientId,
+    }).populate({
+      path: "visits",
+      model: "Visit",
+      select: "-patient",
+      populate: {
+        path: "diagnosis",
+        model: "Diagnosis",
+        select: ["-patient", "-visit"],
+        populate:{
+          path:"doctor",
+          model:"Doctor",
+          select:["name"]
+        }
+      },
+    });
     if (!patient)
       throw new Error(`Patient with id ${req.params.patientId} not found`);
     return res.status(200).json({ data: patient });
