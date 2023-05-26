@@ -142,7 +142,7 @@ const page = () => {
           },
         }}
       >
-        <Paper elevation={24} sx={{ padding: 2, borderRadius: '10px', width: '70%' }}>
+        <Paper elevation={24} sx={{ padding: 2, borderRadius: '10px', width: '100%' }}>
           <Grid container>
             <Grid item xs={6} columnGap={0} columnSpacing={0}>
               <h3>What is the height of the child ? </h3>
@@ -154,7 +154,7 @@ const page = () => {
               <h3>Is the child dehydrated ? </h3>
               <h3>Further Symptoms </h3>
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={3}>
               <h3>: {newVisit?.height} cm</h3>
               <h3>: {newVisit?.weight} Kg</h3>
               <h3>: {newVisit?.temperature} F</h3>
@@ -164,17 +164,22 @@ const page = () => {
               <h3>: {newVisit?.dehydration ? 'Yes' : 'No'} </h3>
               <h3>: {newVisit?.note} </h3>
             </Grid>
+            <Grid item xs={3} sx={{ display: 'grid', alignItems: 'end', justifyContent: 'end' }}>
+              <Link
+                href={`/dashboard/${newVisit?._id}/diagnose`}
+                style={{ textDecoration: 'none' }}
+              >
+                <Button
+                  variant="contained"
+                  color="primary"
+                  sx={{ height: '3rem', width: '10rem', borderRadius: '1rem' }}
+                >
+                  Diagnose
+                </Button>
+              </Link>
+            </Grid>
           </Grid>
         </Paper>
-        <Link href={`/dashboard/${id}/diagnose`} style={{ textDecoration: 'none' }}>
-          <Button
-            variant="contained"
-            color="primary"
-            sx={{ height: '3rem', width: '10rem', borderRadius: '1rem' }}
-          >
-            Diagnose
-          </Button>
-        </Link>
       </Container>
     </Container>
   );
