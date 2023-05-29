@@ -19,6 +19,7 @@ const RegisterComponent = () => {
     email: '',
     phone: '',
     hospital: '',
+    title: '',
     password: '',
   });
   const [chw, setCHW] = React.useState({
@@ -55,6 +56,7 @@ const RegisterComponent = () => {
         email: '',
         phone: '',
         hospital: '',
+        title: '',
         password: '',
       });
     } else if (role === 'CHW') {
