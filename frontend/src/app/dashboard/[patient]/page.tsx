@@ -5,10 +5,13 @@ import { useGetpatientByIdQuery } from '@features/patient/patientApi';
 import { usePathname } from 'next/navigation';
 import { Container, Paper, Typography, Grid, Button } from '@mui/material';
 import Link from 'next/link';
+import { useSelector } from 'react-redux';
+import { RootState } from '@store/index';
 
 const page = () => {
   const router = usePathname().split('/');
   const id = router[router.length - 1];
+  const { isCHWLogin } = useSelector((state: RootState) => state.shishuCare);
   let newVisit, visits;
   const { data: datas, isLoading } = useGetpatientByIdQuery(id);
   if (isLoading) {
@@ -121,7 +124,9 @@ const page = () => {
                   }}
                 >
                   <h2>{visit?.diagnosis.conclusion}</h2>
-                  <h3>Doctor : {visit?.diagnosis.doctor.name}</h3>
+                  <h3>
+                    Doctor : {visit?.diagnosis.doctor ? visit?.diagnosis.doctor.name : 'Unknown'}
+                  </h3>
                 </Paper>
               );
             })
@@ -169,13 +174,17 @@ const page = () => {
                 href={`/dashboard/${newVisit?._id}/diagnose`}
                 style={{ textDecoration: 'none' }}
               >
-                <Button
-                  variant="contained"
-                  color="primary"
-                  sx={{ height: '3rem', width: '10rem', borderRadius: '1rem' }}
-                >
-                  Diagnose
-                </Button>
+                {isCHWLogin ? (
+                  <></>
+                ) : (
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    sx={{ height: '3rem', width: '10rem', borderRadius: '1rem' }}
+                  >
+                    Diagnose
+                  </Button>
+                )}
               </Link>
             </Grid>
           </Grid>
