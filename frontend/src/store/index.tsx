@@ -6,6 +6,7 @@ import { chwApi } from '@features/chw/chwApi';
 import { doctorApi } from '@features/doctor/doctorApi';
 import { patientApi } from '@features/patient/patientApi';
 import { diagnoseApi } from '@features/diagnose/diagnoseApi';
+import { visitApi } from '@features/visit/visitApi';
 
 export const store = configureStore({
   reducer: {
@@ -15,6 +16,7 @@ export const store = configureStore({
     [doctorApi.reducerPath]: doctorApi.reducer,
     [patientApi.reducerPath]: patientApi.reducer,
     [diagnoseApi.reducerPath]: diagnoseApi.reducer,
+    [visitApi.reducerPath]: visitApi.reducer,
   },
   // Adding the api middleware enables caching, invalidation, polling,
   // and other useful features of `rtk-query`.
@@ -24,7 +26,8 @@ export const store = configureStore({
       .concat(chwApi.middleware)
       .concat(doctorApi.middleware)
       .concat(patientApi.middleware)
-      .concat(diagnoseApi.middleware),
+      .concat(diagnoseApi.middleware)
+      .concat(visitApi.middleware),
 });
 
 // optional, but required for refetchOnFocus/refetchOnReconnect behaviors

@@ -21,6 +21,9 @@ const grantObjects = {
     diagnosis: {
       "read:any": ["*"],
     },
+    doctor:{
+      "read:any": ["*"],
+    }
   },
   DOCTOR: {
     doctor: {
