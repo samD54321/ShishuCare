@@ -5,7 +5,11 @@ const { isPermissionGranted } = require("../config/accessControl");
 const actions = require("../constants/action_RBAC");
 
 const allVisit = asyncHandler(async (req, res) => {
-  const visit = await Visit.find();
+  const visit = await Visit.find().populate({
+    path: "patient",
+    model: "Patient",
+    select: ["name","_id"],
+  });
   res.json(visit);
 });
 
@@ -48,9 +52,9 @@ const registerVisit = asyncHandler(async (req, res) => {
   }
 });
 
-const updateVisit=asyncHandler(async(req, res)=>{
-    await Visit.updateOne({_id:req.params.visitId},req.body)
-    return res.status(201).json({msg:"Updated Successfully"});
-})
+const updateVisit = asyncHandler(async (req, res) => {
+  await Visit.updateOne({ _id: req.params.visitId }, req.body);
+  return res.status(201).json({ msg: "Updated Successfully" });
+});
 
 module.exports = { getVisit, registerVisit, allVisit, updateVisit };
