@@ -6,6 +6,11 @@ const DoctorSchema = mongoose.Schema({
         required: [true, "Please mandatorily provide a name!"],
         trim: true,
         },
+    title:{
+        type:String,
+        required: [true, "Please mandatorily provide a title"],
+        defaultValue:"Consultant"
+    },
     phone:{
         type: String,
         required: [true, "Please mandatorily provide a phone number!"],
