@@ -18,27 +18,40 @@ export const visitApi = createApi({
   endpoints: (builder) => ({
     getVisits: builder.query({
       query: () => '/',
-      transformResponse: (response:any) => {
+      transformResponse: (response: any) => {
         return handleResponse(response);
+      },
+    }),
+    registerVisit: builder.mutation({
+      query: (datas) => {
+        const id = datas.patientId;
+        const body = datas.data;
+        return {
+          url: `/${id}`,
+          method: 'POST',
+          body,
+        };
       },
     }),
   }),
 });
 
-// Export hooks for usage in functional components, which are
-// auto-generated based on the defined endpoints
-export const { useGetVisitsQuery } = visitApi;
+
 
 const handleResponse = (datas: any) => {
-    let diagnosedDatas=[];
-    let unDiagnosedDatas=[];
-    for (let data of datas) {
-        if (data.isDiagnosed==false){
-            diagnosedDatas.push({id:data.patient._id,DOV:data.DOV,name:data.patient.name})
-        }
-        else{
-            unDiagnosedDatas.push({ id: data.patient._id, DOV: data.DOV, name: data.patient.name });
-        }
+  let diagnosedDatas = [];
+  let unDiagnosedDatas = [];
+  for (let data of datas) {
+    if (data.isDiagnosed == false) {
+      diagnosedDatas.push({ id: data.patient._id, DOV: data.DOV, name: data.patient.name });
+    } else {
+      unDiagnosedDatas.push({ id: data.patient._id, DOV: data.DOV, name: data.patient.name });
     }
-  return {diagnosedDatas, unDiagnosedDatas};
+  }
+  return { diagnosedDatas, unDiagnosedDatas };
 };
+
+
+// Export hooks for usage in functional components, which are
+// auto-generated based on the defined endpoints
+export const { useGetVisitsQuery, useRegisterVisitMutation  } = visitApi;

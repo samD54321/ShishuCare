@@ -24,11 +24,11 @@ const Patient = () => {
   });
   const router = useRouter();
   const onSubmit = (data: any) => {
-    register(data).then((datas) => {
+    register(data).then((datas: any) => {
       console.log(datas);
       router.push('/dashboard');
     });
-  }
+  };
   return (
     <Container
       maxWidth="md"
@@ -47,7 +47,9 @@ const Patient = () => {
         '.col': {
           width: '100%',
           gap: 0,
+          alignItems: 'start',
           h5: { marginBlock: 0, color: 'red' },
+          h3: { marginLeft: 1, marginBlock: 0 },
         },
       }}
     >
@@ -60,7 +62,8 @@ const Patient = () => {
             rules={{ required: true }}
             render={({ field }) => (
               <div className="col">
-                <TextField fullWidth label="Name" {...field} />
+                <h3>Name</h3>
+                <TextField fullWidth {...field} />
                 {errors.name?.type === 'required' && <h5 role="alert">Name is required</h5>}
               </div>
             )}
@@ -71,6 +74,7 @@ const Patient = () => {
             rules={{ required: true }}
             render={({ field }) => (
               <div className="col">
+                <h3>Date</h3>
                 <TextField type="date" fullWidth {...field} />
                 {errors.DOB?.type === 'required' && <h5 role="alert">Date is required</h5>}
               </div>
@@ -82,7 +86,8 @@ const Patient = () => {
             rules={{ required: true }}
             render={({ field }) => (
               <div className="col">
-                <TextField select label="Gender" fullWidth {...field}>
+                <h3>Gender</h3>
+                <TextField select fullWidth {...field}>
                   <MenuItem value={'Male'}>Male</MenuItem>
                   <MenuItem value={'Female'}>Female</MenuItem>
                 </TextField>
@@ -96,7 +101,8 @@ const Patient = () => {
             control={control}
             render={({ field }) => (
               <div className="col">
-                <TextField fullWidth label="Phone Number" {...field} />
+                <h3>Phone Number</h3>
+                <TextField fullWidth {...field} />
                 {errors.phone?.type === 'required' && (
                   <h5 role="alert">phone Number is required</h5>
                 )}
@@ -109,7 +115,8 @@ const Patient = () => {
             rules={{ required: true }}
             render={({ field }) => (
               <div className="col">
-                <TextField fullWidth label="Address" {...field} />
+                <h3>Address</h3>
+                <TextField fullWidth {...field} />
                 {errors.address?.type === 'required' && <h5 role="alert">Address is required</h5>}
               </div>
             )}
@@ -120,7 +127,8 @@ const Patient = () => {
             rules={{ required: true }}
             render={({ field }) => (
               <div className="col">
-                <TextField fullWidth label="Guardian Name" {...field} />
+                <h3>Guardian Name</h3>
+                <TextField fullWidth  {...field} />
                 {errors.guardian?.type === 'required' && (
                   <h5 role="alert">Guardian Name is required</h5>
                 )}
