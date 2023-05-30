@@ -7,14 +7,15 @@ import Link from 'next/link';
 
 const DoctorDashBoard = () => {
   const { data, isLoading, error } = useGetPatientsQuery('');
-  const RecurringPatients = data?.RecurringPatients;
-  const NewPatients = data?.NewPatients;
+ 
   if (isLoading) {
     return <>Loading...</>;
   }
   if (error) {
     return <>{error}</>;
   }
+   const RecurringPatients = data?.RecurringPatients;
+   const NewPatients = data?.NewPatients;
   return (
     <Container
       maxWidth="lg"

@@ -7,7 +7,7 @@ import PatientIcon from '@assets/png/patient.png';
 import Image from 'next/image';
 import { useGetDoctorsQuery } from '@features/doctor/doctorApi';
 import { useGetVisitsQuery } from '@features/visit/visitApi';
-import Doctor from '@assets/png/doctor.png';
+import Doctor from '@assets/svg/doctor.svg';
 import Link from 'next/link';
 
 const CHWDashBoard = () => {
@@ -61,20 +61,32 @@ const CHWDashBoard = () => {
         <div>
           <h1>Services Available</h1>
           <div className="rowDiv">
-            <Link href={'/dashboard/register'} style={{ textDecoration: 'none' }}>
-              <Button sx={{ borderRadius: '100%', height: '4rem', ':hover': { bgcolor: 'blue' } }}>
-                <Image src={PatientIcon} alt="patient" />
-              </Button>
-            </Link>
-            <Button sx={{ borderRadius: '100%', height: '4rem', ':hover': { bgcolor: 'blue' } }}>
-              <Image src={RegisterIcon} alt="register" />
-            </Button>
+            <div className="colDiv">
+              <Link href={'/dashboard/patient'} style={{ textDecoration: 'none' }}>
+                <Button
+                  sx={{ borderRadius: '100%', height: '4rem', ':hover': { bgcolor: 'blue' } }}
+                >
+                  <Image src={PatientIcon} alt="patient" />
+                </Button>
+              </Link>
+              <h3>Register Patient</h3>
+            </div>
+            <div className="colDiv">
+              <Link href={'/dashboard/visit'} style={{ textDecoration: 'none' }}>
+                <Button
+                  sx={{ borderRadius: '100%', height: '4rem', ':hover': { bgcolor: 'blue' } }}
+                >
+                  <Image src={RegisterIcon} alt="register" />
+                </Button>
+              </Link>
+              <h3>Register Patient's Visit</h3>
+            </div>
           </div>
           <div>
             <h1>Diagnosed Cases</h1>
-            {diagnosedDatas?.map((data, index) => {
+            {diagnosedDatas?.map((data: any, index: number) => {
               return (
-                <Link href={`/dashboard/${data.id}`} style={{ textDecoration: 'none' }}>
+                <Link key={index} href={`/dashboard/${data.id}`} style={{ textDecoration: 'none' }}>
                   <Paper
                     key={index}
                     sx={{
@@ -100,7 +112,7 @@ const CHWDashBoard = () => {
             <h1>UnDiagnosed Cases</h1>
             {unDiagnosedDatas?.map((data, index) => {
               return (
-                <Link href={`/dashboard/${data.id}`} style={{ textDecoration: 'none' }}>
+                <Link key={index} href={`/dashboard/${data.id}`} style={{ textDecoration: 'none' }}>
                   <Paper
                     key={index}
                     sx={{

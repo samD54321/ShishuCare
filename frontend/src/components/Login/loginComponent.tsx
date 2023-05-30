@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { Box, Button, Paper, TextField, Container, Avatar } from '@mui/material';
 import Image from 'next/image';
-import DoctorAvatar from '@assets/svg/doctor.svg';
+import DoctorAvatar from '@assets/svg/doctorLogo.svg';
 import { useLoginCHWMutation } from '@features/chw/chwApi';
 import { useLoginDoctorMutation } from '@features/doctor/doctorApi';
 import ChevronRight from '@assets/svg/chevronRight.svg';
