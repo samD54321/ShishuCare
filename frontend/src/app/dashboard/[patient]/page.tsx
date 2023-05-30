@@ -7,9 +7,22 @@ import { Container, Paper, Typography, Grid, Button } from '@mui/material';
 import Link from 'next/link';
 import { useSelector } from 'react-redux';
 import { RootState } from '@store/index';
+import { useParams } from 'next/navigation';
+import { Registerpatient, RegisterVisit } from '@components/RegisterPatient';
+
+
 
 const page = () => {
   const router = usePathname().split('/');
+  const { patient } = useParams();
+  if (patient==="patient"){
+    return <Registerpatient />;
+
+  }
+  else if (patient==="visit"){
+    return <RegisterVisit />;
+  }
+
   const id = router[router.length - 1];
   const { isCHWLogin } = useSelector((state: RootState) => state.shishuCare);
   let newVisit, visits;
