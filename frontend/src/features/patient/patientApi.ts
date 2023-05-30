@@ -34,6 +34,12 @@ export const patientApi = createApi({
         return handleResponse(response.data);
       },
     }),
+    getAllPatients: builder.query({
+      query: (path) => path,
+      transformResponse: (response: any) => {
+        return response.data;
+      },
+    }),
     getpatientById: builder.query({
       query: (id: string) => `${id}/`,
       transformResponse: (response: any) => {
@@ -45,9 +51,9 @@ export const patientApi = createApi({
     }),
     registerPatient: builder.mutation({
       query: (body) => ({
-        url:'',
+        url: '',
         method: 'POST',
-        body
+        body,
       }),
     }),
   }),
@@ -55,7 +61,12 @@ export const patientApi = createApi({
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useGetPatientsQuery, useGetpatientByIdQuery,useRegisterPatientMutation } = patientApi;
+export const {
+  useGetPatientsQuery,
+  useGetpatientByIdQuery,
+  useRegisterPatientMutation,
+  useGetAllPatientsQuery,
+} = patientApi;
 
 const handleResponse = (datas: IDataResponse[]) => {
   let RecurringPatients: Array<IDataResponse> = [];
