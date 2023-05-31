@@ -5,6 +5,8 @@ import { usePathname } from 'next/navigation';
 import { Container, Paper, Typography, TextField, Button } from '@mui/material';
 import { useCreateDiagnoseMutation } from '@features/diagnose/diagnoseApi';
 import {useRouter} from "next/navigation"
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const page = () => {
   const path = usePathname().split('/');
@@ -26,6 +28,9 @@ const page = () => {
   const handleClick = () => {
     console.log({...diagnoseData})
     createDiagnose({ visitId, diagnoseData }).then((data:any) => {
+       toast.success('Patient diagnosed successfully', {
+         position: toast.POSITION.TOP_CENTER,
+       });
       console.log(data);
     });
     setDiagnoseData({ conclusion: '', severity: '', prescriptions: '' });

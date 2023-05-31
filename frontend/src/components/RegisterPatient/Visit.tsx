@@ -15,6 +15,8 @@ import {
 import { useRouter } from 'next/navigation';
 import { useGetAllPatientsQuery } from '@features/patient/patientApi';
 import { useRegisterVisitMutation } from '@features/visit/visitApi';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Visit = () => {
   const { data } = useGetAllPatientsQuery('');
@@ -46,7 +48,11 @@ const Visit = () => {
   });
   const router = useRouter();
   const onSubmit = (data: any) => {
-    register({ patientId, data }).then((datas) => console.log(datas));
+    register({ patientId, data }).then((datas) =>{ console.log(datas)
+     toast.success('Patient\'s visit added successfully', {
+       position: toast.POSITION.TOP_CENTER,
+     });
+    });
     router.push('/dashboard')
   };
   const onSelectPatient = (data: any) => {

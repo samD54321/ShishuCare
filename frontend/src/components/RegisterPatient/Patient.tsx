@@ -5,6 +5,8 @@ import { Controller, useForm } from 'react-hook-form';
 import { Select, Button, Container, TextField, MenuItem } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { useRegisterPatientMutation } from '@features/patient/patientApi';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Patient = () => {
   const [register] = useRegisterPatientMutation();
@@ -26,6 +28,9 @@ const Patient = () => {
   const onSubmit = (data: any) => {
     register(data).then((datas: any) => {
       console.log(datas);
+       toast.success('Patient added successfully', {
+         position: toast.POSITION.TOP_CENTER,
+       });
       router.push('/dashboard');
     });
   };
