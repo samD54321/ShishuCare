@@ -22,7 +22,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     router.push('/login');
   };
    const handleClickPatient = () => {
-     LocalStorageItem.clearItem();
      router.push('/dashboard/patients');
    };
   return (

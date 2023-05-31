@@ -10,6 +10,6 @@ export class LocalStorageItem {
   };
 
   static clearItem = () => {
-    localStorage.removeItem('user');
+    localStorage.removeItem('User');
   };
 }

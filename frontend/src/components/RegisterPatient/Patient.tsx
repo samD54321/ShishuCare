@@ -79,7 +79,7 @@ const Patient = () => {
             rules={{ required: true }}
             render={({ field }) => (
               <div className="col">
-                <h3>Date</h3>
+                <h3>Date of Birth</h3>
                 <TextField type="date" fullWidth {...field} />
                 {errors.DOB?.type === 'required' && <h5 role="alert">Date is required</h5>}
               </div>
