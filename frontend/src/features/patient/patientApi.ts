@@ -56,6 +56,12 @@ export const patientApi = createApi({
         body,
       }),
     }),
+    deletePatient: builder.mutation({
+      query: (id) => ({
+        url: id,
+        method: 'DELETE',
+      }),
+    }),
   }),
 });
 
@@ -66,6 +72,7 @@ export const {
   useGetpatientByIdQuery,
   useRegisterPatientMutation,
   useGetAllPatientsQuery,
+  useDeletePatientMutation,
 } = patientApi;
 
 const handleResponse = (datas: IDataResponse[]) => {

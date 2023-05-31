@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@store/index';
 import { useParams } from 'next/navigation';
 import { Registerpatient, RegisterVisit } from '@components/RegisterPatient';
+import { PatientDashboard } from '@components/dashboard';
 
 
 
@@ -21,6 +22,9 @@ const page = () => {
   }
   else if (patient==="visit"){
     return <RegisterVisit />;
+  }
+  else if (patient==="patients"){
+    return <PatientDashboard/>
   }
 
   const id = router[router.length - 1];
