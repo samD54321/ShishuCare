@@ -32,9 +32,10 @@ const page = () => {
          position: toast.POSITION.TOP_CENTER,
        });
       console.log(data);
+    router.push('/dashboard');
+
     });
     setDiagnoseData({ conclusion: '', severity: '', prescriptions: '' });
-    router.push('/dashboard')
   };
   return (
     <Container

@@ -19,7 +19,7 @@ const token = LocalStorageItem.getItem().token;
 export const patientApi = createApi({
   reducerPath: 'patientApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:8000/api/patient/',
+    baseUrl: `${process.env.NEXT_PUBLIC_URL}/api/patient/`,
     prepareHeaders: (headers) => {
       if (token) {
         headers.set('Authorization', `Bearer ${token}`);
@@ -27,18 +27,21 @@ export const patientApi = createApi({
       return headers;
     },
   }),
+  tagTypes: ['patient'],
   endpoints: (builder) => ({
     getPatients: builder.query({
       query: (path) => path,
       transformResponse: (response: IPatientResponse) => {
         return handleResponse(response.data);
       },
+      providesTags: ['patient'],
     }),
     getAllPatients: builder.query({
       query: (path) => path,
       transformResponse: (response: any) => {
         return response.data;
       },
+      providesTags: ['patient'],
     }),
     getpatientById: builder.query({
       query: (id: string) => `${id}/`,
@@ -46,8 +49,14 @@ export const patientApi = createApi({
         const data = response.data;
         const visits = data.visits;
         let newVisit = visits.pop();
+        if (visits.length == 0) {
+          if (newVisit.isDiagnosed){
+            visits.push(newVisit)
+          }
+        }
         return { data, newVisit, visits };
       },
+      providesTags: ['patient'],
     }),
     registerPatient: builder.mutation({
       query: (body) => ({
@@ -55,12 +64,14 @@ export const patientApi = createApi({
         method: 'POST',
         body,
       }),
+      invalidatesTags: ['patient'],
     }),
     deletePatient: builder.mutation({
       query: (id) => ({
         url: id,
         method: 'DELETE',
       }),
+      invalidatesTags: ['patient'],
     }),
   }),
 });

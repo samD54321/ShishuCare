@@ -7,7 +7,7 @@ const token = LocalStorageItem.getItem().token;
 export const diagnoseApi = createApi({
   reducerPath: 'diagnoseApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:8000/api/diagnosis',
+    baseUrl: `${process.env.NEXT_PUBLIC_URL}/api/diagnosis`,
     prepareHeaders: (headers) => {
       if (token) {
         headers.set('Authorization', `Bearer ${token}`);
@@ -15,6 +15,7 @@ export const diagnoseApi = createApi({
       return headers;
     },
   }),
+  tagTypes: ['diagnosis'],
   endpoints: (builder) => ({
     createDiagnose: builder.mutation({
       query: (data) => {
@@ -24,6 +25,7 @@ export const diagnoseApi = createApi({
           body: data.diagnoseData,
         };
       },
+      invalidatesTags:['diagnosis']
     }),
   }),
 });

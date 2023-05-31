@@ -22,7 +22,7 @@ interface IDoctorRegister {
 export const doctorApi = createApi({
   reducerPath: 'doctorApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:8000/api/doctor/',
+    baseUrl: `${process.env.NEXT_PUBLIC_URL}/api/doctor/`,
     prepareHeaders: (headers) => {
       if (token) {
         headers.set('Authorization', `Bearer ${token}`);
@@ -30,6 +30,7 @@ export const doctorApi = createApi({
       return headers;
     },
   }),
+  tagTypes: ['doctor'],
   endpoints: (builder) => ({
     loginDoctor: builder.mutation<IDoctorLogin, IDoctorLogin>({
       query: (body) => ({
@@ -37,6 +38,7 @@ export const doctorApi = createApi({
         method: 'POST',
         body,
       }),
+      invalidatesTags: ['doctor'],
     }),
     registerDoctor: builder.mutation<IDoctorRegister, IDoctorRegister>({
       query: (body) => ({
@@ -44,12 +46,14 @@ export const doctorApi = createApi({
         method: 'POST',
         body,
       }),
+      invalidatesTags: ['doctor'],
     }),
     getDoctors: builder.query({
       query: (url) => url,
-      transformResponse:(response:any)=>{
-        return response.data
-      }
+      providesTags:['doctor'],
+      transformResponse: (response: any) => {
+        return response.data;
+      },
     }),
   }),
 });

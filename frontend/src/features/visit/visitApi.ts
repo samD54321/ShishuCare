@@ -7,7 +7,7 @@ const token = LocalStorageItem.getItem().token;
 export const visitApi = createApi({
   reducerPath: 'visitApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:8000/api/visit',
+    baseUrl: `${process.env.NEXT_PUBLIC_URL}/api/visit`,
     prepareHeaders: (headers) => {
       if (token) {
         headers.set('Authorization', `Bearer ${token}`);
@@ -42,7 +42,7 @@ const handleResponse = (datas: any) => {
   let diagnosedDatas = [];
   let unDiagnosedDatas = [];
   for (let data of datas) {
-    if (data.isDiagnosed == false) {
+    if (data.isDiagnosed == true) {
       diagnosedDatas.push({ id: data.patient._id, DOV: data.DOV, name: data.patient.name });
     } else {
       unDiagnosedDatas.push({ id: data.patient._id, DOV: data.DOV, name: data.patient.name });
