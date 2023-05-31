@@ -8,6 +8,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRegisterCHWMutation } from '@features/chw/chwApi';
 import { useRegisterDoctorMutation } from '@features/doctor/doctorApi';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const RegisterComponent = () => {
   let users: [string, string][];
@@ -49,6 +51,9 @@ const RegisterComponent = () => {
   const handleClick = () => {
     if (role === 'Doctor') {
       registerDoctor(doctor).then((datas) => {
+         toast.success('Doctor has been registered successfully', {
+           position: toast.POSITION.TOP_CENTER,
+         });
         console.log(datas);
       });
       setDoctor({
@@ -61,6 +66,9 @@ const RegisterComponent = () => {
       });
     } else if (role === 'CHW') {
       registerCHW(chw).then((datas) => {
+        toast.success('CHW has been registered successfully', {
+          position: toast.POSITION.TOP_CENTER,
+        });
         console.log(datas);
       });
       setCHW({

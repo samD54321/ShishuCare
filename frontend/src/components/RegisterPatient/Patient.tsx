@@ -5,6 +5,8 @@ import { Controller, useForm } from 'react-hook-form';
 import { Select, Button, Container, TextField, MenuItem } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { useRegisterPatientMutation } from '@features/patient/patientApi';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Patient = () => {
   const [register] = useRegisterPatientMutation();
@@ -26,6 +28,9 @@ const Patient = () => {
   const onSubmit = (data: any) => {
     register(data).then((datas: any) => {
       console.log(datas);
+       toast.success('Patient added successfully', {
+         position: toast.POSITION.TOP_CENTER,
+       });
       router.push('/dashboard');
     });
   };
@@ -74,7 +79,7 @@ const Patient = () => {
             rules={{ required: true }}
             render={({ field }) => (
               <div className="col">
-                <h3>Date</h3>
+                <h3>Date of Birth</h3>
                 <TextField type="date" fullWidth {...field} />
                 {errors.DOB?.type === 'required' && <h5 role="alert">Date is required</h5>}
               </div>

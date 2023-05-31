@@ -1,5 +1,8 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { LocalStorageItem } from '@auth/auth';
+import { Tags } from '../tagTypes';
+
+const { DOCTOR } = Tags;
 
 
 const token = LocalStorageItem.getItem().token;
@@ -22,7 +25,7 @@ interface IDoctorRegister {
 export const doctorApi = createApi({
   reducerPath: 'doctorApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:8000/api/doctor/',
+    baseUrl: `${process.env.NEXT_PUBLIC_URL}/api/doctor/`,
     prepareHeaders: (headers) => {
       if (token) {
         headers.set('Authorization', `Bearer ${token}`);
@@ -30,6 +33,7 @@ export const doctorApi = createApi({
       return headers;
     },
   }),
+  tagTypes: [DOCTOR],
   endpoints: (builder) => ({
     loginDoctor: builder.mutation<IDoctorLogin, IDoctorLogin>({
       query: (body) => ({
@@ -37,6 +41,7 @@ export const doctorApi = createApi({
         method: 'POST',
         body,
       }),
+      invalidatesTags: [DOCTOR],
     }),
     registerDoctor: builder.mutation<IDoctorRegister, IDoctorRegister>({
       query: (body) => ({
@@ -44,12 +49,14 @@ export const doctorApi = createApi({
         method: 'POST',
         body,
       }),
+      invalidatesTags: [DOCTOR],
     }),
     getDoctors: builder.query({
       query: (url) => url,
-      transformResponse:(response:any)=>{
-        return response.data
-      }
+      providesTags: ['doctor'],
+      transformResponse: (response: any) => {
+        return response.data;
+      },
     }),
   }),
 });

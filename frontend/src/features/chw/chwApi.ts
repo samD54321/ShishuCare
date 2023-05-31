@@ -6,7 +6,10 @@ interface ICHWRequest {
 }
 
 export interface ICHWLoginResponse {
- email: string; name: string; phone: string; token: string ;
+  email: string;
+  name: string;
+  phone: string;
+  token: string;
 }
 
 interface ICHWRegister {
@@ -19,9 +22,10 @@ interface ICHWRegister {
 // Define a service using a base URL and expected endpoints
 export const chwApi = createApi({
   reducerPath: 'chwApi',
-  baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:8000/api/chw/' }),
+  baseQuery: fetchBaseQuery({ baseUrl: `${process.env.NEXT_PUBLIC_URL}/api/chw/` }),
+  tagTypes: ['chw'],
   endpoints: (builder) => ({
-    loginCHW: builder.mutation<ICHWLoginResponse,ICHWRequest>({
+    loginCHW: builder.mutation<ICHWLoginResponse, ICHWRequest>({
       query: (body) => ({
         url: 'login',
         method: 'POST',

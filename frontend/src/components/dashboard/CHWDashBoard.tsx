@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Container, Button, Paper } from '@mui/material';
 import RegisterIcon from '@assets/png/vitals.png';
 import PatientIcon from '@assets/png/patient.png';
@@ -11,10 +11,30 @@ import Doctor from '@assets/svg/doctor.svg';
 import Link from 'next/link';
 
 const CHWDashBoard = () => {
-  const { data: doctors, isLoading, isError } = useGetDoctorsQuery('');
-  const { data: visits } = useGetVisitsQuery('');
-  const diagnosedDatas = visits?.diagnosedDatas;
-  const unDiagnosedDatas = visits?.unDiagnosedDatas;
+  const {
+    data: doctors_data,
+    isLoading,
+    isError,
+    isSuccess: isSuccessDoctor,
+  } = useGetDoctorsQuery('');
+  const { data: visits, isSuccess: isSuccessVisit } = useGetVisitsQuery('');
+
+
+  const [doctors, setDoctor] = useState([]);
+  const [diagnosedDatas, setDiagnosedDatas] = useState([]);
+  const [unDiagnosedDatas, setUnDiagnosedDatas] = useState([]);
+
+    // const diagnosedDatas = visits?.diagnosedDatas;
+  // const unDiagnosedDatas = visits?.unDiagnosedDatas;
+
+  useEffect(() => {
+    setDoctor(doctors_data);
+  }, [isSuccessDoctor]);
+
+  useEffect(() => {
+    setDiagnosedDatas(visits?.diagnosedDatas);
+    setUnDiagnosedDatas(visits?.unDiagnosedDatas);
+  }, [isSuccessVisit]);
 
   console.log(visits);
   if (isLoading) {
@@ -41,6 +61,7 @@ const CHWDashBoard = () => {
           marginInline: 2,
         },
         '.columnDiv': {
+          width: '50%',
           display: 'flex',
           flexDirection: 'column',
           gap: '6px',
@@ -84,62 +105,72 @@ const CHWDashBoard = () => {
           </div>
           <div>
             <h1>Diagnosed Cases</h1>
-            {diagnosedDatas?.map((data: any, index: number) => {
-              return (
-                <Link key={index} href={`/dashboard/${data.id}`} style={{ textDecoration: 'none' }}>
-                  <Paper
+            {diagnosedDatas &&
+              diagnosedDatas.map((data: any, index: number) => {
+                return (
+                  <Link
                     key={index}
-                    sx={{
-                      textAlign: 'start',
-                      bgcolor: 'whitesmoke',
-                      borderRadius: '5px',
-                      ':hover': {
-                        bgcolor: '#234AAF',
-                        h3: {
-                          color: 'white',
-                        },
-                      },
-                    }}
+                    href={`/dashboard/${data.id}`}
+                    style={{ textDecoration: 'none' }}
                   >
-                    <h3>{data.name}</h3>
-                    <h3>{data.DOV.split('T')[0]}</h3>
-                  </Paper>
-                </Link>
-              );
-            })}
+                    <Paper
+                      key={index}
+                      sx={{
+                        textAlign: 'start',
+                        bgcolor: 'whitesmoke',
+                        borderRadius: '5px',
+                        ':hover': {
+                          bgcolor: '#234AAF',
+                          h3: {
+                            color: 'white',
+                          },
+                        },
+                      }}
+                    >
+                      <h3>{data.name}</h3>
+                      <h3>{data.DOV.split('T')[0]}</h3>
+                    </Paper>
+                  </Link>
+                );
+              })}
           </div>
           <div>
             <h1>UnDiagnosed Cases</h1>
-            {unDiagnosedDatas?.map((data, index) => {
-              return (
-                <Link key={index} href={`/dashboard/${data.id}`} style={{ textDecoration: 'none' }}>
-                  <Paper
+            {unDiagnosedDatas &&
+              unDiagnosedDatas.map((data: any, index) => {
+                return (
+                  <Link
                     key={index}
-                    sx={{
-                      textAlign: 'start',
-                      bgcolor: 'whitesmoke',
-                      borderRadius: '5px',
-                      ':hover': {
-                        bgcolor: '#234AAF',
-                        h3: {
-                          color: 'white',
-                        },
-                      },
-                    }}
+                    href={`/dashboard/${data.id}`}
+                    style={{ textDecoration: 'none' }}
                   >
-                    <h3>{data.name}</h3>
-                    <h3>{data.DOV.split('T')[0]}</h3>
-                  </Paper>
-                </Link>
-              );
-            })}
+                    <Paper
+                      key={index}
+                      sx={{
+                        textAlign: 'start',
+                        bgcolor: 'whitesmoke',
+                        borderRadius: '5px',
+                        ':hover': {
+                          bgcolor: '#234AAF',
+                          h3: {
+                            color: 'white',
+                          },
+                        },
+                      }}
+                    >
+                      <h3>{data.name}</h3>
+                      <h3>{data.DOV.split('T')[0]}</h3>
+                    </Paper>
+                  </Link>
+                );
+              })}
           </div>
         </div>
       </div>
       <div className="columnDiv">
         <h1>Available Doctors</h1>
         <div className="rowDiv">
-          {doctors.length &&
+          {doctors &&
             doctors.map((doctor: any, index: number) => {
               return (
                 <Paper

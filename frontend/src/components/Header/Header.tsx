@@ -6,11 +6,17 @@ import Logo from '@assets/png/logo.png';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useAuth } from '@hooks/useAuth';
 
 const Header = () => {
+  const { authenticated } = useAuth();
   const router = useRouter();
   const handleClick = () => {
-    router.push('/dashboard');
+    if (authenticated) {
+      router.push('/dashboard');
+    } else {
+      router.push('/');
+    }
   };
   return (
     <>
@@ -26,7 +32,7 @@ const Header = () => {
           justifyContent: 'center',
           height: '60%',
           width: ['12%', '10%', '7%', '4.5%'],
-          cursor:"pointer"
+          cursor: 'pointer',
         }}
       >
         <Image height={70} width={70} src={Logo} alt="header"></Image>

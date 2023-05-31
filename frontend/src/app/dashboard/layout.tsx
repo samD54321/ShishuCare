@@ -21,6 +21,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     LocalStorageItem.clearItem();
     router.push('/login');
   };
+   const handleClickPatient = () => {
+     router.push('/dashboard/patients');
+   };
   return (
     // <html lang="en">
     //   <title>ShishuCare</title>
@@ -57,13 +60,34 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         >
           <Header />
         </Box>
-        <Button
-          onClick={handleClick}
-          sx={{ height: '50%', bgcolor: '#234AAF', borderRadius: '10%', marginRight: 6 }}
-          variant="contained"
-        >
-          Logout
-        </Button>
+        <div>
+          {user === 'CHW' ? (
+            <>
+              <Button
+                onClick={handleClickPatient}
+                sx={{ height: '50%', bgcolor: '#234AAF', borderRadius: '10%', marginRight: 6 }}
+                variant="contained"
+              >
+                Patients
+              </Button>
+              <Button
+                onClick={handleClick}
+                sx={{ height: '50%', bgcolor: '#234AAF', borderRadius: '10%', marginRight: 6 }}
+                variant="contained"
+              >
+                Logout
+              </Button>
+            </>
+          ) : (
+            <Button
+              onClick={handleClick}
+              sx={{ height: '50%', bgcolor: '#234AAF', borderRadius: '10%', marginRight: 6 }}
+              variant="contained"
+            >
+              Logout
+            </Button>
+          )}
+        </div>
       </Container>
       {children}
     </Container>

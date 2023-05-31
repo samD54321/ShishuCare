@@ -1,5 +1,8 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { LocalStorageItem } from '@auth/auth';
+import { Tags } from '../tagTypes';
+
+const {DIAGNOSIS,PATIENT,VISIT}= Tags
 
 const token = LocalStorageItem.getItem().token;
 
@@ -7,7 +10,7 @@ const token = LocalStorageItem.getItem().token;
 export const diagnoseApi = createApi({
   reducerPath: 'diagnoseApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:8000/api/diagnosis',
+    baseUrl: `${process.env.NEXT_PUBLIC_URL}/api/diagnosis`,
     prepareHeaders: (headers) => {
       if (token) {
         headers.set('Authorization', `Bearer ${token}`);
@@ -15,6 +18,7 @@ export const diagnoseApi = createApi({
       return headers;
     },
   }),
+  tagTypes: [DIAGNOSIS, PATIENT, VISIT],
   endpoints: (builder) => ({
     createDiagnose: builder.mutation({
       query: (data) => {
@@ -24,6 +28,7 @@ export const diagnoseApi = createApi({
           body: data.diagnoseData,
         };
       },
+      invalidatesTags: [PATIENT, VISIT],
     }),
   }),
 });

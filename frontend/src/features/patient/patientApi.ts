@@ -1,6 +1,9 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { LocalStorageItem } from '@auth/auth';
-import { ILocalStorageItem } from '@interfaces/index';
+import { Tags } from '../tagTypes';
+
+const { PATIENT, VISIT } = Tags;
+
 
 interface IDataResponse {
   visits: {
@@ -19,7 +22,7 @@ const token = LocalStorageItem.getItem().token;
 export const patientApi = createApi({
   reducerPath: 'patientApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:8000/api/patient/',
+    baseUrl: `${process.env.NEXT_PUBLIC_URL}/api/patient/`,
     prepareHeaders: (headers) => {
       if (token) {
         headers.set('Authorization', `Bearer ${token}`);
@@ -27,18 +30,21 @@ export const patientApi = createApi({
       return headers;
     },
   }),
+  tagTypes: [PATIENT, VISIT],
   endpoints: (builder) => ({
     getPatients: builder.query({
       query: (path) => path,
       transformResponse: (response: IPatientResponse) => {
         return handleResponse(response.data);
       },
+      providesTags: [PATIENT],
     }),
     getAllPatients: builder.query({
       query: (path) => path,
       transformResponse: (response: any) => {
         return response.data;
       },
+      providesTags: [PATIENT],
     }),
     getpatientById: builder.query({
       query: (id: string) => `${id}/`,
@@ -46,8 +52,14 @@ export const patientApi = createApi({
         const data = response.data;
         const visits = data.visits;
         let newVisit = visits.pop();
+        if (visits.length == 0) {
+          if (newVisit.isDiagnosed) {
+            visits.push(newVisit);
+          }
+        }
         return { data, newVisit, visits };
       },
+      providesTags: [PATIENT],
     }),
     registerPatient: builder.mutation({
       query: (body) => ({
@@ -55,6 +67,14 @@ export const patientApi = createApi({
         method: 'POST',
         body,
       }),
+      invalidatesTags: [PATIENT],
+    }),
+    deletePatient: builder.mutation({
+      query: (id) => ({
+        url: id,
+        method: 'DELETE',
+      }),
+      invalidatesTags: [PATIENT],
     }),
   }),
 });
@@ -66,6 +86,7 @@ export const {
   useGetpatientByIdQuery,
   useRegisterPatientMutation,
   useGetAllPatientsQuery,
+  useDeletePatientMutation,
 } = patientApi;
 
 const handleResponse = (datas: IDataResponse[]) => {
