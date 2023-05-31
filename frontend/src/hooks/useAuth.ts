@@ -18,8 +18,10 @@ export const useAuth = () => {
     dispatch(reset());
   }
   let authenticated: boolean;
+  let isDoctorLogin: boolean=user==="Doctor"
+  let isCHWLogin: boolean = user === 'CHW' 
   let isLoading: boolean = true;
-  const { isDoctorLogin, isCHWLogin } = useSelector((state: RootState) => state.shishuCare);
+  // const { isDoctorLogin, isCHWLogin } = useSelector((state: RootState) => state.shishuCare);
   if (!isDoctorLogin && !isCHWLogin) {
     authenticated = false;
     isLoading = false;
