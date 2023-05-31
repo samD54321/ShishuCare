@@ -1,6 +1,9 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { LocalStorageItem } from '@auth/auth';
-import { ILocalStorageItem } from '@interfaces/index';
+import { Tags } from '../tagTypes';
+
+const { PATIENT, VISIT } = Tags;
+
 
 interface IDataResponse {
   visits: {
@@ -27,21 +30,21 @@ export const patientApi = createApi({
       return headers;
     },
   }),
-  tagTypes: ['patient'],
+  tagTypes: [PATIENT, VISIT],
   endpoints: (builder) => ({
     getPatients: builder.query({
       query: (path) => path,
       transformResponse: (response: IPatientResponse) => {
         return handleResponse(response.data);
       },
-      providesTags: ['patient'],
+      providesTags: [PATIENT],
     }),
     getAllPatients: builder.query({
       query: (path) => path,
       transformResponse: (response: any) => {
         return response.data;
       },
-      providesTags: ['patient'],
+      providesTags: [PATIENT],
     }),
     getpatientById: builder.query({
       query: (id: string) => `${id}/`,
@@ -50,13 +53,13 @@ export const patientApi = createApi({
         const visits = data.visits;
         let newVisit = visits.pop();
         if (visits.length == 0) {
-          if (newVisit.isDiagnosed){
-            visits.push(newVisit)
+          if (newVisit.isDiagnosed) {
+            visits.push(newVisit);
           }
         }
         return { data, newVisit, visits };
       },
-      providesTags: ['patient'],
+      providesTags: [PATIENT],
     }),
     registerPatient: builder.mutation({
       query: (body) => ({
@@ -64,14 +67,14 @@ export const patientApi = createApi({
         method: 'POST',
         body,
       }),
-      invalidatesTags: ['patient'],
+      invalidatesTags: [PATIENT],
     }),
     deletePatient: builder.mutation({
       query: (id) => ({
         url: id,
         method: 'DELETE',
       }),
-      invalidatesTags: ['patient'],
+      invalidatesTags: [PATIENT],
     }),
   }),
 });

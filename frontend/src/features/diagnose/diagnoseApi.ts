@@ -1,5 +1,8 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { LocalStorageItem } from '@auth/auth';
+import { Tags } from '../tagTypes';
+
+const {DIAGNOSIS,PATIENT,VISIT}= Tags
 
 const token = LocalStorageItem.getItem().token;
 
@@ -15,7 +18,7 @@ export const diagnoseApi = createApi({
       return headers;
     },
   }),
-  tagTypes: ['diagnosis'],
+  tagTypes: [DIAGNOSIS, PATIENT, VISIT],
   endpoints: (builder) => ({
     createDiagnose: builder.mutation({
       query: (data) => {
@@ -25,7 +28,7 @@ export const diagnoseApi = createApi({
           body: data.diagnoseData,
         };
       },
-      invalidatesTags:['diagnosis']
+      invalidatesTags: [PATIENT, VISIT],
     }),
   }),
 });

@@ -20,7 +20,6 @@ const getCHW = asyncHandler(async (req, res) => {
   const permission = isPermissionGranted(req.role, "chw", actions.READ_OWN);
   console.log(permission);
   if (permission) {
-    console.log("asdad")
     const chw = await CHW.findOne({ _id: req.params.chwId }).select(
       "-password"
     );
@@ -43,14 +42,14 @@ const registerCHW = asyncHandler(async (req, res) => {
 });
 
 const loginCHW = asyncHandler(async (req, res) => {
-  console.log(req.ID,req.role)
+  console.log(req.ID, req.role);
   const { email, password } = req.body;
   const chw = await CHW.findOne({ email });
   if (!chw) {
     res.statusCode = 400;
     throw new Error("Not registered. please register first");
   }
-  const checkPassword =await bcrypt.compare(password, chw.password);
+  const checkPassword = await bcrypt.compare(password, chw.password);
   if (!checkPassword) {
     res.statusCode = 401;
     throw new Error("Invalid credentials");
@@ -61,7 +60,7 @@ const loginCHW = asyncHandler(async (req, res) => {
         email: chw.email,
         phone: chw.phone,
         token: generateToken(chw._id, "CHW"),
-        role:"CHW"
+        role: "CHW",
       },
     });
   }

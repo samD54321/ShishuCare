@@ -6,7 +6,10 @@ interface ICHWRequest {
 }
 
 export interface ICHWLoginResponse {
- email: string; name: string; phone: string; token: string ;
+  email: string;
+  name: string;
+  phone: string;
+  token: string;
 }
 
 interface ICHWRegister {
@@ -28,7 +31,6 @@ export const chwApi = createApi({
         method: 'POST',
         body,
       }),
-      invalidatesTags: ['chw'],
     }),
     registerCHW: builder.mutation<ICHWRegister, ICHWRegister>({
       query: (body) => ({
@@ -36,7 +38,6 @@ export const chwApi = createApi({
         method: 'POST',
         body,
       }),
-      invalidatesTags: ['chw'],
     }),
   }),
 });
